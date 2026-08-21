@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ImageHelper - Image Size KB में कम करें</title>
+	<style>
+	/* =========================
+   Basic Reset
+========================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f8faff;
+    color: #172033;
+    line-height: 1.5;
+}
+
+
+/* =========================
+   Header
+========================= */
+
+header {
+    height: 75px;
+    background: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 30px;
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.logo small {
+    display: block;
+    font-size: 12px;
+    font-weight: normal;
+    color: #666;
+}
+
+nav {
+    display: flex;
+    gap: 28px;
+}
+
+nav a {
+    text-decoration: none;
+    color: #202534;
+    font-size: 15px;
+}
+
+nav a:first-child {
+    color: #315bea;
+    font-weight: bold;
+}
+
+header button {
+    background: #6945e8;
+    color: white;
+    border: none;
+    border-radius: 8px;
+
+    padding: 12px 20px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+
+/* =========================
+   Main
+========================= */
+
+main {
+    max-width: 1100px;
+    margin: auto;
+    padding: 35px 20px;
+}
+
+
+/* =========================
+   Hero
+========================= */
+
+.hero {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.hero h1 {
+    font-size: 38px;
+    margin-bottom: 8px;
+}
+
+.hero h1 span {
+    color: #315bea;
+}
+
+.hero p {
+    color: #667085;
+    font-size: 17px;
+}
+
+
+/* =========================
+   Privacy
+========================= */
+
+.privacy {
+    background: #eef4ff;
+    border: 1px solid #d6e2ff;
+
+    color: #2854bd;
+
+    padding: 13px 20px;
+    border-radius: 7px;
+
+    text-align: center;
+    margin-bottom: 25px;
+
+    font-size: 14px;
+}
+
+
+/* =========================
+   Main Tool
+========================= */
+
+.tool {
+    background: white;
+
+    border-radius: 14px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+
+    padding: 25px;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 35px;
+}
+
+
+/* =========================
+   Headings
+========================= */
+
+.controls h2,
+.preview h2 {
+    font-size: 17px;
+    margin-bottom: 12px;
+}
+
+
+/* =========================
+   Upload Box
+========================= */
+
+.upload-box {
+    border: 2px dashed #5272ee;
+
+    border-radius: 10px;
+
+    padding: 40px 20px;
+
+    text-align: center;
+
+    background: #fbfcff;
+
+    margin-bottom: 25px;
+}
+
+.upload-box input {
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.upload-box p {
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.upload-box small {
+    color: #777;
+}
+
+
+/* =========================
+   Size Buttons
+========================= */
+
+.size-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+
+    margin-bottom: 20px;
+}
+
+.size-options button {
+    background: white;
+
+    border: 1px solid #d4d8e1;
+
+    border-radius: 7px;
+
+    padding: 10px 18px;
+
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.size-options button:hover {
+    border-color: #315bea;
+    color: #315bea;
+}
+
+.size-options button.active {
+    background: #315bea;
+    color: white;
+    border-color: #315bea;
+}
+
+
+/* =========================
+   Custom Size
+========================= */
+
+label {
+    display: block;
+    margin-bottom: 7px;
+    font-size: 14px;
+}
+
+.custom-size {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.custom-size input {
+    width: 70%;
+    padding: 11px;
+
+    border: 1px solid #d4d8e1;
+    border-radius: 7px 0 0 7px;
+
+    font-size: 15px;
+}
+
+.custom-size select {
+    width: 30%;
+
+    border: 1px solid #d4d8e1;
+    border-left: none;
+
+    border-radius: 0 7px 7px 0;
+
+    padding: 10px;
+}
+
+
+/* =========================
+   Range Slider
+========================= */
+
+input[type="range"] {
+    width: 100%;
+    margin: 10px 0 15px;
+}
+
+
+/* =========================
+   Compress Button
+========================= */
+
+#compressBtn {
+    width: 100%;
+
+    background: #315bea;
+    color: white;
+
+    border: none;
+    border-radius: 8px;
+
+    padding: 14px;
+
+    font-size: 16px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    margin-top: 10px;
+}
+
+#compressBtn:hover {
+    background: #244bd0;
+}
+
+
+/* =========================
+   Preview
+========================= */
+
+.original-preview,
+.compressed-preview {
+    width: 100%;
+    min-height: 220px;
+
+    background: #f5f7fa;
+
+    border: 1px solid #dce1e8;
+
+    border-radius: 8px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    margin-bottom: 10px;
+}
+
+.original-preview img,
+.compressed-preview img {
+    max-width: 100%;
+    max-height: 300px;
+
+    display: block;
+}
+
+
+/* =========================
+   Preview Information
+========================= */
+
+.preview p {
+    font-size: 14px;
+    color: #555;
+
+    margin: 5px 0;
+}
+
+.preview span {
+    font-weight: bold;
+    color: #222;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #e5e7eb;
+
+    margin: 25px 0;
+}
+
+
+/* =========================
+   Download Button
+========================= */
+
+#downloadBtn {
+    width: 100%;
+
+    background: #22a05a;
+    color: white;
+
+    border: none;
+    border-radius: 8px;
+
+    padding: 14px;
+
+    font-size: 16px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    margin-top: 15px;
+}
+
+#downloadBtn:hover {
+    background: #198849;
+}
+
+
+/* =========================
+   Why Use Section
+========================= */
+
+.why-us {
+    margin-top: 45px;
+}
+
+.why-us > h2 {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.features {
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 15px;
+}
+
+.features div {
+    background: white;
+
+    border: 1px solid #e8ebf0;
+
+    border-radius: 10px;
+
+    padding: 22px;
+
+    text-align: center;
+}
+
+.features h3 {
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+.features p {
+    color: #667085;
+    font-size: 13px;
+}
+
+
+/* =========================
+   Footer
+========================= */
+
+footer {
+    background: white;
+
+    border-top: 1px solid #e5e7eb;
+
+    text-align: center;
+
+    padding: 25px;
+
+    margin-top: 40px;
+
+    color: #777;
+
+    font-size: 13px;
+}
+
+
+/* =========================
+   Mobile Responsive
+========================= */
+
+@media (max-width: 768px) {
+
+    header {
+        height: auto;
+
+        flex-direction: column;
+
+        gap: 15px;
+
+        padding: 20px;
+    }
+
+    nav {
+        width: 100%;
+
+        overflow-x: auto;
+
+        gap: 20px;
+
+        padding-bottom: 5px;
+    }
+
+    header button {
+        width: 100%;
+    }
+
+    .hero h1 {
+        font-size: 28px;
+    }
+
+    .tool {
+        grid-template-columns: 1fr;
+
+        padding: 18px;
+
+        gap: 30px;
+    }
+
+    .features {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+
+/* =========================
+   Small Mobile
+========================= */
+
+@media (max-width: 480px) {
+
+    main {
+        padding: 25px 12px;
+    }
+
+    .hero h1 {
+        font-size: 24px;
+    }
+
+    .hero p {
+        font-size: 14px;
+    }
+
+    .features {
+        grid-template-columns: 1fr;
+    }
+
+    .size-options button {
+        flex: 1;
+        min-width: 80px;
+    }
+}
+	</style>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            🖼️ ImageHelper
+            <small>आसान, तेज और सुरक्षित</small>
+        </div>
+
+        <nav>
+            <a href="#">KB में कम करें</a>
+            <a href="#">Resize Image</a>
+            <a href="#">Crop Image</a>
+            <a href="#">JPG ↔️ PNG</a>
+            <a href="#">और Tools</a>
+        </nav>
+
+        <button>🎁 100% फ्री</button>
+    </header>
+
+
+    <!-- Main Content -->
+    <main>
+
+        <!-- Page Title -->
+        <section class="hero">
+            <h1>Image Size <span>KB में कम करें</span></h1>
+            <p>अपनी फोटो का साइज कम करें और मनचाहे KB में डाउनलोड करें</p>
+        </section>
+
+
+        <!-- Privacy Notice -->
+        <div class="privacy">
+            🔒 आपकी सभी इमेज आपके ब्राउज़र में प्रोसेस होती हैं।
+            कोई भी फोटो हमारे सर्वर पर अपलोड नहीं होती।
+        </div>
+
+
+        <!-- Main Tool -->
+        <section class="tool">
+
+            <!-- Left Side -->
+            <div class="controls">
+
+                <h2>1. फोटो अपलोड करें</h2>
+
+                <div class="upload-box">
+                    <input type="file" id="imageInput"
+                           accept="image/jpeg,image/png,image/webp">
+
+                    <p>यहाँ ड्रैग करें या क्लिक करके फोटो चुनें</p>
+                    <small>JPG, PNG, WebP (Max 10MB)</small>
+                </div>
+
+
+                <h2>2. Target Size (लगभग)</h2>
+
+                <div class="size-options">
+                    <button>20 KB</button>
+                    <button>50 KB</button>
+                    <button>100 KB</button>
+                    <button>200 KB</button>
+                    <button>500 KB</button>
+                    <button>Custom</button>
+                </div>
+
+
+                <label>या MB में साइज चुनें</label>
+
+                <div class="custom-size">
+    <input type="number" id="customSize" placeholder="अपना Size डालें" min="1">
+
+    <select id="sizeUnit">
+        <option value="KB">KB</option>
+        <option value="MB">MB</option>
+    </select>
+</div>
+				
+				
+                <button id="compressBtn">
+                    ⚙️ Compress Image
+                </button>
+
+            </div>
+
+
+            <!-- Right Side -->
+            <div class="preview">
+
+                <h2>Preview (Original)</h2>
+
+                <div class="original-preview">
+                    <img id="originalImage" src="" alt="Original Image">
+                </div>
+
+                <p>
+                    Original Size:
+                    <span id="originalSize">0 KB</span>
+                </p>
+
+                <p>
+                    Dimensions:
+                    <span id="dimensions">0 × 0 px</span>
+                </p>
+
+
+                <hr>
+
+
+                <h2>Preview (Compressed)</h2>
+
+                <div class="compressed-preview">
+                    <img id="compressedImage" src="" alt="Compressed Image">
+                </div>
+
+                <p>
+                    Compressed Size:
+                    <span id="compressedSize">0 KB</span>
+                </p>
+
+                <p>
+                    Savings:
+                    <span id="savings">0%</span>
+                </p>
+
+
+                <button id="downloadBtn">
+                    ⬇️ Download Image
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- Why Use Section -->
+        <section class="why-us">
+
+            <h2>यह Tool क्यों इस्तेमाल करें?</h2>
+
+            <div class="features">
+
+                <div>
+                    <h3>⚡ तेज और आसान</h3>
+                    <p>सिर्फ कुछ सेकंड में KB में कम करें</p>
+                </div>
+
+                <div>
+                    <h3>🔒 100% सुरक्षित</h3>
+                    <p>कोई भी फोटो सर्वर पर अपलोड नहीं होती</p>
+                </div>
+
+                <div>
+                    <h3>📱 सभी डिवाइस के लिए</h3>
+                    <p>मोबाइल, टैबलेट और कंप्यूटर पर काम करता है</p>
+                </div>
+
+                <div>
+                    <h3>🆓 पूरी तरह फ्री</h3>
+                    <p>बिना किसी फीस के इस्तेमाल करें</p>
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2026 ImageHelper. All rights reserved.</p>
+        <p>Made with ❤️ in India</p>
+    </footer>
+<script>
+
+const imageInput = document.getElementById("imageInput");
+const originalImage = document.getElementById("originalImage");
+const compressedImage = document.getElementById("compressedImage");
+
+const originalSize = document.getElementById("originalSize");
+const compressedSize = document.getElementById("compressedSize");
+const dimensions = document.getElementById("dimensions");
+const savings = document.getElementById("savings");
+
+const compressBtn = document.getElementById("compressBtn");
+const downloadBtn = document.getElementById("downloadBtn");
+
+const customSizeInput = document.getElementById("customSize");
+const sizeUnit = document.getElementById("sizeUnit");
+
+let selectedFile = null;
+let compressedData = null;
+let targetKB = 100;
+
+
+// ========================================
+// PHOTO SELECT
+// ========================================
+
+imageInput.addEventListener("change", function () {
+
+    const file = this.files[0];
+
+    if (!file) return;
+
+    selectedFile = file;
+
+    originalSize.textContent =
+        (file.size / 1024).toFixed(2) + " KB";
+
+    const url = URL.createObjectURL(file);
+
+    originalImage.src = url;
+
+    originalImage.onload = function () {
+
+        dimensions.textContent =
+            this.naturalWidth +
+            " × " +
+            this.naturalHeight +
+            " px";
+
+    };
+
+});
+
+
+// ========================================
+// TARGET SIZE BUTTONS
+// ========================================
+
+const sizeButtons =
+    document.querySelectorAll(".size-options button");
+
+sizeButtons.forEach(function (button) {
+
+    button.addEventListener("click", function () {
+
+        const text =
+            this.textContent.trim();
+
+        if (text === "Custom") {
+
+            sizeButtons.forEach(function (btn) {
+                btn.classList.remove("active");
+            });
+
+            this.classList.add("active");
+
+            customSizeInput.focus();
+
+            return;
+        }
+
+        targetKB = parseFloat(text);
+
+        sizeButtons.forEach(function (btn) {
+            btn.classList.remove("active");
+        });
+
+        this.classList.add("active");
+
+    });
+
+});
+
+
+// ========================================
+// CUSTOM SIZE
+// ========================================
+
+customSizeInput.addEventListener("input", function () {
+
+    const value =
+        parseFloat(this.value);
+
+    if (!value || value <= 0) return;
+
+    if (sizeUnit.value === "MB") {
+        targetKB = value * 1024;
+    } else {
+        targetKB = value;
+    }
+
+    sizeButtons.forEach(function (btn) {
+        btn.classList.remove("active");
+    });
+
+    sizeButtons.forEach(function (btn) {
+
+        if (btn.textContent.trim() === "Custom") {
+            btn.classList.add("active");
+        }
+
+    });
+
+});
+
+
+// ========================================
+// UNIT CHANGE
+// ========================================
+
+sizeUnit.addEventListener("change", function () {
+
+    const value =
+        parseFloat(customSizeInput.value);
+
+    if (!value || value <= 0) return;
+
+    if (this.value === "MB") {
+        targetKB = value * 1024;
+    } else {
+        targetKB = value;
+    }
+
+});
+
+
+// ========================================
+// COMPRESS BUTTON
+// ========================================
+
+compressBtn.addEventListener("click", function () {
+
+    if (!selectedFile) {
+
+        alert("पहले फोटो अपलोड करें।");
+
+        return;
+
+    }
+
+    if (!targetKB || targetKB <= 0) {
+
+        alert("कृपया Target Size चुनें।");
+
+        return;
+
+    }
+
+    compressImage(selectedFile, targetKB);
+
+});
+
+
+// ========================================
+// MAIN COMPRESSION
+// ========================================
+
+function compressImage(file, targetKB) {
+
+    const reader = new FileReader();
+
+    reader.onload = function (event) {
+
+        const img = new Image();
+
+        img.onload = function () {
+
+            let width = img.width;
+            let height = img.height;
+
+            const canvas =
+                document.createElement("canvas");
+
+            const ctx =
+                canvas.getContext("2d");
+
+            /*
+              पहले original dimensions रखेंगे।
+              अगर target नहीं मिलता तो dimensions
+              धीरे-धीरे कम करेंगे।
+            */
+
+            let scale = 1;
+
+            let bestBlob = null;
+            let bestSize = 0;
+
+            let attempts = 0;
+
+            const maxAttempts = 70;
+
+
+            // --------------------------------
+            // Compression function
+            // --------------------------------
+
+            function compressAtQuality(
+                currentScale,
+                quality,
+                callback
+            ) {
+
+                canvas.width =
+                    Math.max(
+                        1,
+                        Math.round(width * currentScale)
+                    );
+
+                canvas.height =
+                    Math.max(
+                        1,
+                        Math.round(height * currentScale)
+                    );
+
+
+                ctx.clearRect(
+                    0,
+                    0,
+                    canvas.width,
+                    canvas.height
+                );
+
+
+                ctx.drawImage(
+                    img,
+                    0,
+                    0,
+                    canvas.width,
+                    canvas.height
+                );
+
+
+                canvas.toBlob(
+
+                    function (blob) {
+
+                        if (!blob) {
+                            callback(null);
+                            return;
+                        }
+
+                        callback(blob);
+
+                    },
+
+                    "image/jpeg",
+
+                    quality
+
+                );
+
+            }
+
+
+            // --------------------------------
+            // Find target size
+            // --------------------------------
+
+            function findSize() {
+
+                attempts++;
+
+
+                /*
+                  Quality range:
+                  0.10 से 0.95
+                */
+
+                let low = 0.10;
+                let high = 0.95;
+
+                let bestUnderTarget = null;
+                let bestUnderKB = 0;
+
+
+                function searchQuality(count) {
+
+                    if (count >= 9) {
+
+                        /*
+                          Target से कम मिला तो
+                          उसे best result मानेंगे।
+                        */
+
+                        if (bestUnderTarget) {
+
+                            showResult(
+                                bestUnderTarget
+                            );
+
+                            return;
+
+                        }
+
+
+                        /*
+                          अगर target तक नहीं पहुँच पाए,
+                          dimensions कम करके फिर कोशिश करें।
+                        */
+
+                        if (scale > 0.25) {
+
+                            scale *= 0.88;
+
+                            findSize();
+
+                            return;
+
+                        }
+
+
+                        /*
+                          बहुत छोटा target होने पर
+                          जो सबसे अच्छा मिला वही दिखाएँ।
+                        */
+
+                        if (bestBlob) {
+
+                            showResult(bestBlob);
+
+                        }
+
+                        return;
+
+                    }
+
+
+                    const quality =
+                        (low + high) / 2;
+
+
+                    compressAtQuality(
+                        scale,
+                        quality,
+                        function (blob) {
+
+                            if (!blob) return;
+
+
+                            const currentKB =
+                                blob.size / 1024;
+
+
+                            /*
+                              Target से कम है,
+                              लेकिन जितना करीब हो सके
+                              उतना बड़ा result चाहिए।
+                            */
+
+                            if (
+                                currentKB <= targetKB
+                            ) {
+
+                                if (
+                                    !bestUnderTarget ||
+                                    currentKB >
+                                    bestUnderKB
+                                ) {
+
+                                    bestUnderTarget =
+                                        blob;
+
+                                    bestUnderKB =
+                                        currentKB;
+
+                                }
+
+
+                                low =
+                                    quality;
+
+                            } else {
+
+                                high =
+                                    quality;
+
+                            }
+
+
+                            searchQuality(
+                                count + 1
+                            );
+
+                        }
+                    );
+
+                }
+
+
+                searchQuality(0);
+
+            }
+
+
+            // --------------------------------
+            // Show result
+            // --------------------------------
+
+            function showResult(blob) {
+
+                compressedData =
+                    blob;
+
+
+                const url =
+                    URL.createObjectURL(blob);
+
+
+                compressedImage.src =
+                    url;
+
+
+                const finalKB =
+                    blob.size / 1024;
+
+
+                compressedSize.textContent =
+                    finalKB.toFixed(2) +
+                    " KB";
+
+
+                const originalKB =
+                    file.size / 1024;
+
+
+                const saving =
+                    (
+                        (originalKB - finalKB)
+                        /
+                        originalKB
+                    ) * 100;
+
+
+                savings.textContent =
+                    Math.max(
+                        0,
+                        saving
+                    ).toFixed(1) +
+                    "%";
+
+            }
+
+
+            findSize();
+
+        };
+
+
+        img.src =
+            event.target.result;
+
+    };
+
+
+    reader.readAsDataURL(file);
+
+}
+
+
+// ========================================
+// DOWNLOAD
+// ========================================
+
+downloadBtn.addEventListener(
+    "click",
+    function () {
+
+        if (!compressedData) {
+
+            alert(
+                "पहले Image Compress करें।"
+            );
+
+            return;
+
+        }
+
+
+        const url =
+            URL.createObjectURL(
+                compressedData
+            );
+
+
+        const link =
+            document.createElement("a");
+
+
+        link.href = url;
+
+        link.download =
+            "compressed-image.jpg";
+
+
+        document.body.appendChild(link);
+
+        link.click();
+
+        document.body.removeChild(link);
+
+        URL.revokeObjectURL(url);
+
+    }
+);
+
+</script>
+</body>
+</html>
