@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <title>PDF Compressor</title>
+  <style>
+    body {font-family: Arial, sans-serif; background:#f5f5f5; margin:0; padding:0;}
+    header {background:#1877f2; color:white; padding:15px; text-align:center;}
+    .container {max-width:600px; margin:40px auto; background:white; padding:20px; border-radius:8px; box-shadow:0 0 10px rgba(0,0,0,0.1);}
+    h1 {text-align:center; color:#333;}
+    label {font-weight:bold; display:block; margin-top:15px;}
+    input[type="file"], input[type="number"] {width:100%; padding:8px; margin-top:5px;}
+    .btn-group {display:flex; gap:10px; flex-wrap:wrap; margin-top:20px;}
+    button {flex:1; padding:10px; background:#1877f2; color:white; border:none; border-radius:5px; font-size:16px; cursor:pointer;}
+    button:hover {background:#145db2;}
+    #status {margin-top:20px; text-align:center; font-weight:bold;}
+    #downloadBtn {display:none; background:#28a745;}
+    #downloadBtn:hover {background:#1e7e34;}
+    #progressBar {width:100%; background:#ddd; border-radius:5px; margin-top:20px; display:none;}
+    #progressBar div {height:20px; width:0%; background:#1877f2; border-radius:5px; text-align:center; color:white; font-size:12px;}
+  </style>
+</head>
+<body>
+  <header><h2>PDF Compressor Online</h2></header>
+  <div class="container">
+    <h1>Compress PDF to Custom Size</h1>
+
+    <label for="pdfFile">Upload PDF:</label>
+    <input type="file" id="pdfFile" accept="application/pdf">
+
+    <label for="targetSize">Custom Size (KB):</label>
+    <input type="number" id="targetSize" placeholder="e.g. 200">
+
+    <div class="btn-group">
+      <button onclick="compressPDF(200)">200 KB</button>
+      <button onclick="compressPDF(300)">300 KB</button>
+      <button onclick="compressPDF(50)">50 KB</button>
+      <button onclick="compressPDF()">Custom</button>
+    </div>
+
+    <div id="progressBar"><div id="progress"></div></div>
+
+    <button id="downloadBtn">Download Compressed PDF</button>
+    <p id="status"></p>
+  </div>
+
+  <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
+  <script>
+    let finalBlob = null;
+
+    async function compressPDF(fixedTarget) {
+      const fileInput = document.getElementById('pdfFile');
+      const customTarget = parseInt(document.getElementById('targetSize').value);
+      const targetKB = fixedTarget || customTarget;
+      const statusEl = document.getElementById('status');
+      const downloadBtn = document.getElementById('downloadBtn');
+      const progressBar = document.getElementById('progressBar');
+      const progress = document.getElementById('progress');
+
+      if (!fileInput.files.length) {
+        statusEl.style.color = "red";
+        statusEl.innerText = "⚠️ Please upload a PDF file.";
+        return;
+      }
+      if (!targetKB || targetKB <= 0) {
+        statusEl.style.color = "red";
+        statusEl.innerText = "⚠️ Please enter a valid target size in KB.";
+        return;
+      }
+
+      const file = fileInput.files[0];
+      const { PDFDocument } = PDFLib;
+      const pdfDoc = await PDFDocument.load(await file.arrayBuffer());
+
+      let quality = 0.9; // start at 90%
+      let compressedPdfBytes, finalSizeKB;
+
+      progressBar.style.display = "block";
+      progress.style.width = "0%";
+      progress.innerText = "0%";
+
+      let step = 0;
+      do {
+        // simulate progress
+        step += 20;
+        if (step > 100) step = 100;
+        progress.style.width = step + "%";
+        progress.innerText = step + "%";
+
+        compressedPdfBytes = await pdfDoc.save({ useObjectStreams: true });
+        finalBlob = new Blob([compressedPdfBytes], { type: "application/pdf" });
+        finalSizeKB = finalBlob.size / 1024;
+
+        quality -= 0.1;
+      } while (finalSizeKB > targetKB && quality > 0.2);
+
+      progress.style.width = "100%";
+      progress.innerText = "Done";
+
+      if (finalSizeKB > targetKB) {
+        statusEl.style.color = "orange";
+        statusEl.innerText = `⚠️ Could not reach exact target. Result: ${Math.round(finalSizeKB)} KB (<= ${targetKB} KB not possible client-side)`;
+      } else {
+        statusEl.style.color = "green";
+        statusEl.innerText = `✅ Target: ${targetKB} KB | Result: ${Math.round(finalSizeKB)} KB`;
+      }
+
+      downloadBtn.style.display = "block";
+    }
+
+    document.getElementById('downloadBtn').onclick = () => {
+      if (finalBlob) {
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(finalBlob);
+        link.download = "compressed.pdf";
+        link.click();
+      }
+    };
+  </script>
+</body>
+</html>
